@@ -21,10 +21,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.justauth.presentation.components.AuthButton
-import com.example.justauth.presentation.components.BubbleAnimation
-import com.example.justauth.presentation.components.HeaderBackground
-import com.example.justauth.presentation.components.TextEntryModule
+import com.example.justauth.presentation.components.*
 import com.example.justauth.presentation.viewmodel.RegisterViewModel
 import com.example.justauth.ui.theme.*
 
@@ -34,6 +31,15 @@ fun RegisterScreen(
     onNavigateToLoginScreen: () -> Unit,
     registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
+
+    NavDestinationHelper(
+        shouldNavigate = {
+            registerViewModel.registerState.isSuccessfullyRegistered
+        },
+        destination = {
+            onRegisterSuccessNavigation()
+        }
+    )
 
     Box(
         modifier = Modifier

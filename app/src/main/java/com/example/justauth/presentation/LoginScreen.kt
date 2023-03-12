@@ -20,10 +20,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.justauth.presentation.components.AuthButton
-import com.example.justauth.presentation.components.BubbleAnimation
-import com.example.justauth.presentation.components.HeaderBackground
-import com.example.justauth.presentation.components.TextEntryModule
+import com.example.justauth.presentation.components.*
 import com.example.justauth.presentation.viewmodel.LoginViewModel
 import com.example.justauth.ui.theme.*
 
@@ -33,6 +30,16 @@ fun LoginScreen(
     onNavigateRegisterScreen: () -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
+
+    NavDestinationHelper(
+        shouldNavigate = {
+            loginViewModel.loginState.isSuccessfullyLoggedIn
+        },
+        destination = {
+            onLoginSuccessNavigation()
+        }
+    )
+
 
     Box(
         modifier = Modifier
@@ -60,23 +67,23 @@ fun LoginScreen(
         }
         LoginContainer(
             emailValue = {
-                         loginViewModel.loginState.emailInput
+                loginViewModel.loginState.emailInput
             },
             passwordValue = {
-                            loginViewModel.loginState.passwordInput
+                loginViewModel.loginState.passwordInput
             },
             buttonEnabled = {
-                            loginViewModel.loginState.isInputValid
+                loginViewModel.loginState.isInputValid
             },
             onEmailChange = loginViewModel::onEmailInputChange,
             onPasswordChange = loginViewModel::onPasswordChange,
             onLoginButtonClick = loginViewModel::onLoginClick,
             isPasswordShown = {
-                              loginViewModel.loginState.isPasswordShown
+                loginViewModel.loginState.isPasswordShown
             },
             onTrailingPasswordIconClick = loginViewModel::onToggleVisualTransformation,
             errorHint = {
-                        loginViewModel.loginState.errorMessageInput
+                loginViewModel.loginState.errorMessageInput
             },
             isLoading = {
                 loginViewModel.loginState.isLoading
@@ -164,7 +171,7 @@ fun LoginContainer(
             onTrailingIconClick = {
                 onTrailingPasswordIconClick()
             },
-            visualTransformation = if(isPasswordShown()) {
+            visualTransformation = if (isPasswordShown()) {
                 VisualTransformation.None
             } else {
                 PasswordVisualTransformation()
